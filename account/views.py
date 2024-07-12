@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer, UserLoginSerializer
-from database import db_connect
+from database.database import db_connect
 
 DB_NAME = 'quote_recommend'
 COLLECTION_NAME = 'User'

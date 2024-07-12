@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from database import db_connect
-from datetime import datetime, date
+from database.database import db_connect
 
 DB_NAME = "quote_recommend"
 COLLECTION_NAME = "User"
