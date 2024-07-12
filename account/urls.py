@@ -6,4 +6,5 @@ urlpatterns = [
     path('user/', views.UserList.as_view(), name='user_list'),                     # [GET] 유저 리스트 조회, [POST] 유저 생성
     path('user/<str:email>/', views.UserDetail.as_view(), name='user_detail'),     # [GET] 해당 유저 조회, [PUT] 해당 유저 정보 수정, [DELETE] 해당 유저 삭제
     path('login/', views.UserLogin.as_view()),                                     # [POST] 해당 유저의 로그인 
+    path('registered_quotes/<str:user_id>/', views.registered_quotes_list, name='registered_quotes_list'), # [GET] 해당 User가 등록한 Quote 목록 조회
 ]

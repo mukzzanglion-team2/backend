@@ -1,9 +1,12 @@
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer, UserLoginSerializer
 from database.database import db_connect
+from quote.crud import find_quote
+from account.crud import find_user
 
 DB_NAME = 'quote_recommend'
 COLLECTION_NAME = 'User'
@@ -68,3 +71,19 @@ class UserLogin(APIView):
         if serializer.is_valid():
             return Response({"message": "로그인 성공"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+def registered_quotes_list(request, user_id):
+    if request.method == 'GET':
+        try:
+            user = find_user(user_id)
+            registered_quotes = user['registered_quotes']
+
+            data = []
+            for quote_id in registered_quotes:
+                data.append(find_quote(quote_id))
+            return JsonResponse(data=data, status=200, safe=False) # 비사전 객체도 반환(safe=False)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+    else:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
